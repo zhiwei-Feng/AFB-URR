@@ -5,3 +5,5 @@ logs/
 output/
 overlay/
 tmp/
+
+.vscode
