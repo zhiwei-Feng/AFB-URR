@@ -16,8 +16,8 @@ os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"  # Match nvidia-smi and CUDA devi
 
 def get_args():
     parser = argparse.ArgumentParser(description='Eval AFB-URR')
-    parser.add_argument('--gpu', type=str, default="cuda:0",
-                        help='Target device to run on.')
+    parser.add_argument('--gpu', type=int, default=0,
+                        help='GPU card id.')
     parser.add_argument('--level', type=int, default=1, required=True,
                         help='1: DAVIS17. 2: Youtube-VOS. 3: LongVideo')
     parser.add_argument('--budget', type=int, default='300000',
