@@ -8,6 +8,7 @@ import myutils
 
 
 class ResBlock(nn.Module):
+    # code from STM
     def __init__(self, indim, outdim=None, stride=1):
         super(ResBlock, self).__init__()
         if outdim == None:
@@ -31,6 +32,10 @@ class ResBlock(nn.Module):
 
 
 class EncoderM(nn.Module):
+    # code from STM, but have some different
+    # 1. control whether resnet50 is pretrained by parameter 'load_imagenet_params'
+    # 2. delete two line code which add channel to in_m, in_o respectively in [forward] function
+    # 3. delete some return value of [forward] function
     def __init__(self, load_imagenet_params):
         super(EncoderM, self).__init__()
         self.conv1_m = nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3, bias=False)
@@ -64,6 +69,9 @@ class EncoderM(nn.Module):
 
 
 class EncoderQ(nn.Module):
+    # code from STM, but have a little different
+    # 1. control whether resnet50 is pretrained by parameter 'load_imagenet_params'
+    # 2. delete some return value of [forward] function
     def __init__(self, load_imagenet_params):
         super(EncoderQ, self).__init__()
         resnet = resnet50(pretrained=load_imagenet_params)
@@ -94,7 +102,9 @@ class EncoderQ(nn.Module):
 
 
 class KeyValue(nn.Module):
-
+    # code from STM, but add something
+    # 1. add self.keydim and self.valdim in [__init__] function
+    # 2. change key and value 's shape in [forward]
     def __init__(self, indim, keydim, valdim):
         super(KeyValue, self).__init__()
         self.keydim = keydim
@@ -112,6 +122,7 @@ class KeyValue(nn.Module):
 
 
 class Refine(nn.Module):
+    # coda from STM, only fix self.scale_factor=2
     def __init__(self, inplanes, planes):
         super(Refine, self).__init__()
         self.convFS = nn.Conv2d(inplanes, planes, kernel_size=(3, 3), padding=(1, 1), stride=1)
@@ -128,6 +139,7 @@ class Refine(nn.Module):
 
 
 class Matcher(nn.Module):
+    # custom
     def __init__(self, thres_valid=1e-3, update_bank=False):
         super(Matcher, self).__init__()
         self.thres_valid = thres_valid
@@ -179,6 +191,7 @@ class Matcher(nn.Module):
 
 
 class Decoder(nn.Module):
+    # custom
     def __init__(self, device):  # mdim_global = 256
         super(Decoder, self).__init__()
 
