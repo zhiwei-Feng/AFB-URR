@@ -12,12 +12,12 @@ from model import AFB_URR, FeatureBank
 import myutils
 
 torch.set_grad_enabled(False)
-
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"  # Match nvidia-smi and CUDA device ids
 
 def get_args():
     parser = argparse.ArgumentParser(description='Eval AFB-URR')
-    parser.add_argument('--gpu', type=int, default=0,
-                        help='GPU card id.')
+    parser.add_argument('--gpu', type=str, default="cuda:0",
+                        help='Target device to run on.')
     parser.add_argument('--level', type=int, default=1, required=True,
                         help='1: DAVIS17. 2: Youtube-VOS. 3: LongVideo')
     parser.add_argument('--budget', type=int, default='300000',
@@ -295,7 +295,7 @@ if __name__ == '__main__':
     print(myutils.gct(), 'Args =', args)
 
     if args.gpu >= 0 and torch.cuda.is_available():
-        device = torch.device('cuda', args.gpu)
+        device = torch.device(args.gpu)
     else:
         raise ValueError('CUDA is required. --gpu must be >= 0.')
 
